@@ -19,7 +19,12 @@ $(document).ready(function() {
           <p><strong>Cell:</strong> ${user.cell}</p>
           <p><strong>Nationality:</strong> ${user.nat}</p>
         `);
+
+        // 年齢に基づいてレコメンド画像を取得し、コンソールに出力
+        const recommendationImage = getRecommendationImage(user.dob.age);
+        console.log("Recommendation Image URL:", recommendationImage);
       },
+
       error: function() {
         // エラーが発生時に表示するメッセージ
         $('#c-user__info').html('<p>エラーが発生しました</p>');
@@ -27,3 +32,26 @@ $(document).ready(function() {
     });
   });
 });
+
+// 年齢に基づいてレコメンド画像を選択する関数
+function getRecommendationImage(age) {
+  // 年齢別のレコメンド画像の配列を定義
+  const recommendations = [
+    { ageRange: [20, 29], image: 'img/cookie.JPG' },
+    { ageRange: [30, 39], image: '' },
+    { ageRange: [40, 49], image: '' },
+    { ageRange: [50, 59], image: '' },
+    { ageRange: [60, 69], image: '' },
+    { ageRange: [70, 80], image: '' }
+  ];
+
+  // デバッグ：適切なレコメンド画像を選択しているかを確認する
+  console.log("Age:", age);
+  const recommendation = recommendations.find(rec => {
+    const inRange = age >= rec.ageRange[0] && age <= rec.ageRange[1];
+    console.log("Age Range:", rec.ageRange, "In Range:", inRange);
+    return inRange;
+  });
+
+  return recommendation ? recommendation.image : '';
+}
